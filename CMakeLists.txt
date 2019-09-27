@@ -284,7 +284,7 @@ if (UNIX AND NOT APPLE)
   option(WITH_CERES "Add Ceres support for advanced 3-D reconstruction." OFF)
 endif (UNIX AND NOT APPLE)
 option(WITH_FLIR_CAMERA "Add FLIR (formerly Point Grey) camera code (requires Spinnaker SDK already installed)." OFF)
-# option(WITH_3D_ADAM_MODEL "Add 3-D Adam model (requires OpenGL, Ceres, Eigen, OpenMP, FreeImage, GLEW, and IGL already installed)." OFF)
+option(WITH_3D_ADAM_MODEL "Add 3-D Adam model (requires OpenGL, Ceres, Eigen, OpenMP, FreeImage, GLEW, and IGL already installed)." OFF)
 
 # Faster GUI rendering
 # Note: It seems to work by default in Windows and Ubuntu, but not in Mac nor Android.
@@ -309,11 +309,11 @@ endif (WIN32 OR APPLE)
 option(DOWNLOAD_BODY_25_MODEL "Download body 25-keypoint (body COCO and 6-keypoint foot) model." ON)
 option(DOWNLOAD_BODY_COCO_MODEL "Download body 18-keypoint COCO model." OFF)
 option(DOWNLOAD_BODY_MPI_MODEL "Download body 15-keypoint MPI model." OFF)
-option(DOWNLOAD_FACE_MODEL "Download face model." ON)
-option(DOWNLOAD_HAND_MODEL "Download hand model." ON)
+option(DOWNLOAD_FACE_MODEL "Download face model." OFF)
+option(DOWNLOAD_HAND_MODEL "Download hand model." OFF)
 
 # Asio
-# option(USE_ASIO "Include Asio header-only library." OFF)
+option(USE_ASIO "Include Asio header-only library." OFF)
 
 # More options
 option(BUILD_EXAMPLES "Build OpenPose examples." ON)

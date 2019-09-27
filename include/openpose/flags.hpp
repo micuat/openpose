@@ -16,7 +16,7 @@
 // Note: This command will show you flags for other unnecessary 3rdparty files. Check only the flags for the OpenPose
 // executable. E.g., for `openpose.bin`, look for `Flags from examples/openpose/openpose.cpp:`.
 // Debugging/Other
-DEFINE_int32(logging_level,             3,              "The logging level. Integer in the range [0, 255]. 0 will output any log() message, while"
+DEFINE_int32(logging_level,             4,              "The logging level. Integer in the range [0, 255]. 0 will output any log() message, while"
                                                         " 255 will not output any. Current OpenPose library messages are in the range 0-4: 1 for"
                                                         " low priority messages and 4 for important ones.");
 DEFINE_bool(disable_multi_thread,       false,          "It would slightly reduce the frame rate in order to highly reduce the lag. Mainly useful"
@@ -28,7 +28,7 @@ DEFINE_int32(profile_speed,             1000,           "If PROFILER_ENABLED was
 #ifndef OPENPOSE_FLAGS_DISABLE_POSE
 #ifndef OPENPOSE_FLAGS_DISABLE_PRODUCER
 // Producer
-DEFINE_int32(camera,                    -1,             "The camera index for cv::VideoCapture. Integer in the range [0, 9]. Select a negative"
+DEFINE_int32(camera,                    1 ,             "The camera index for cv::VideoCapture. Integer in the range [0, 9]. Select a negative"
                                                         " number (by default), to auto-detect and open the first available camera.");
 DEFINE_string(camera_resolution,        "-1x-1",        "Set the camera resolution (either `--camera` or `--flir_camera`). `-1x-1` will use the"
                                                         " default 1280x720 for `--camera`, or the maximum flir camera resolution available for"
@@ -190,7 +190,7 @@ DEFINE_double(render_threshold,         0.05,           "Only estimated keypoint
                                                         " the saved results. Generally, a high threshold (> 0.5) will only render very clear body"
                                                         " parts; while small thresholds (~0.1) will also output guessed and occluded keypoints,"
                                                         " but also more false positives (i.e., wrong detections).");
-DEFINE_int32(render_pose,               -1,             "Set to 0 for no rendering, 1 for CPU rendering (slightly faster), and 2 for GPU rendering"
+DEFINE_int32(render_pose,               0,             "Set to 0 for no rendering, 1 for CPU rendering (slightly faster), and 2 for GPU rendering"
                                                         " (slower but greater functionality, e.g., `alpha_X` flags). If -1, it will pick CPU if"
                                                         " CPU_ONLY is enabled, or GPU if CUDA is enabled. If rendering is enabled, it will render"
                                                         " both `outputData` and `cvOutputData` with the original image and desired body part to be"
@@ -214,7 +214,7 @@ DEFINE_double(hand_alpha_heatmap,       0.7,            "Analogous to `alpha_hea
 #ifndef OPENPOSE_FLAGS_DISABLE_DISPLAY
 // Display
 DEFINE_bool(fullscreen,                 false,          "Run in full-screen mode (press f during runtime to toggle).");
-DEFINE_bool(no_gui_verbose,             false,          "Do not write text on output images on GUI (e.g., number of current frame and people). It"
+DEFINE_bool(no_gui_verbose,             true,          "Do not write text on output images on GUI (e.g., number of current frame and people). It"
                                                         " does not affect the pose rendering.");
 DEFINE_int32(display,                   -1,             "Display mode: -1 for automatic selection; 0 for no display (useful if there is no X server"
                                                         " and/or to slightly speed up the processing if visual output is not required); 2 for 2-D"
@@ -266,7 +266,7 @@ DEFINE_string(write_keypoint_format,    "yml",          "(Deprecated, use `write
 // Result Saving - Extra Algorithms
 DEFINE_string(write_bvh,                "",             "Experimental, not available yet. E.g., `~/Desktop/mocapResult.bvh`.");
 // UDP Communication
-DEFINE_string(udp_host,                 "",             "Experimental, not available yet. IP for UDP communication. E.g., `192.168.0.1`.");
+DEFINE_string(udp_host,                 "127.0.0.1",             "Experimental, not available yet. IP for UDP communication. E.g., `192.168.0.1`.");
 DEFINE_string(udp_port,                 "8051",         "Experimental, not available yet. Port number for UDP communication.");
 #endif // OPENPOSE_FLAGS_DISABLE_POSE
 

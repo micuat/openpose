@@ -52,12 +52,12 @@ namespace op
         }
 
         void enter();
-
+		inline std::shared_ptr<std::stringstream> getStream() { return upOfstream; }
     private:
         bool mHumanReadable;
         long long mBracesCounter;
         long long mBracketsCounter;
-        std::unique_ptr<std::ofstream> upOfstream; // std::unique_ptr to solve std::move issue in GCC < 5
+        std::shared_ptr<std::stringstream> upOfstream; // std::unique_ptr to solve std::move issue in GCC < 5
 
         DELETE_COPY(JsonOfstream);
     };

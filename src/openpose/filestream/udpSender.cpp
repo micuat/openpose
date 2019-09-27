@@ -8,6 +8,9 @@
 #include <openpose/filestream/fileStream.hpp>
 #include <openpose/filestream/udpSender.hpp>
 
+#include <openpose/filestream/jsonOfstream.hpp>
+#include <openpose/utilities/fastMath.hpp>
+
 namespace op
 {
     #ifdef USE_ASIO
@@ -111,7 +114,64 @@ namespace op
     {
     }
 
-    void UdpSender::sendJointAngles(const double* const adamPosePtr, const int adamPoseRows,
+	void UdpSender::send2DJoints(const std::vector<std::pair<Array<float>, std::string>>& keypointVector,
+		const std::vector<std::vector<std::array<float, 3>>> & candidates) {
+
+		JsonOfstream jsonOfstream("test.json", true);
+		// Sanity check
+		for (const auto& keypointPair : keypointVector)
+			if (!keypointPair.first.empty() && keypointPair.first.getNumberDimensions() != 3
+				&& keypointPair.first.getNumberDimensions() != 1)
+				error("keypointVector.getNumberDimensions() != 1 && != 3.", __LINE__, __FUNCTION__, __FILE__);
+		// Add people keypoints
+		jsonOfstream.key("people");
+		jsonOfstream.arrayOpen();
+		// Ger max numberPeople
+		auto numberPeople = 0;
+		for (auto vectorIndex = 0u; vectorIndex < keypointVector.size(); vectorIndex++)
+			numberPeople = fastMax(numberPeople, keypointVector[vectorIndex].first.getSize(0));
+		for (auto person = 0; person < numberPeople; person++)
+		{
+			jsonOfstream.objectOpen();
+			for (auto vectorIndex = 0u; vectorIndex < keypointVector.size(); vectorIndex++)
+			{
+				const auto& keypoints = keypointVector[vectorIndex].first;
+				const auto& keypointName = keypointVector[vectorIndex].second;
+				const auto numberElementsPerRaw = keypoints.getSize(1) * keypoints.getSize(2);
+				jsonOfstream.key(keypointName);
+				jsonOfstream.arrayOpen();
+				// Body parts
+				if (numberElementsPerRaw > 0)
+				{
+					const auto finalIndex = person * numberElementsPerRaw;
+					for (auto element = 0; element < numberElementsPerRaw - 1; element++)
+					{
+						jsonOfstream.plainText(keypoints[finalIndex + element]);
+						jsonOfstream.comma();
+					}
+					// Last element (no comma)
+					jsonOfstream.plainText(keypoints[finalIndex + numberElementsPerRaw - 1]);
+				}
+				// Close array
+				jsonOfstream.arrayClose();
+				if (vectorIndex < keypointVector.size() - 1)
+					jsonOfstream.comma();
+			}
+			jsonOfstream.objectClose();
+			if (person < numberPeople - 1)
+			{
+				jsonOfstream.comma();
+				jsonOfstream.enter();
+			}
+		}
+		// Close bodies array
+		jsonOfstream.arrayClose();
+
+		std::string data = jsonOfstream.getStream()->str();
+		spImpl->mUdpClient.send(data);
+	}
+
+	void UdpSender::sendJointAngles(const double* const adamPosePtr, const int adamPoseRows,
                                     const double* const adamTranslationPtr,
                                     const double* const adamFaceCoeffsExpPtr, const int faceCoeffRows)
     {

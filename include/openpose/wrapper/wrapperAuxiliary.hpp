@@ -714,7 +714,7 @@ namespace op
             log("", Priority::Low, __LINE__, __FUNCTION__, __FILE__);
             // Send information (e.g., to Unity) though UDP client-server communication
 
-#ifdef USE_3D_ADAM_MODEL
+//#ifdef USE_3D_ADAM_MODEL
             if (!wrapperStructOutput.udpHost.empty() && !wrapperStructOutput.udpPort.empty())
             {
                 log("", Priority::Low, __LINE__, __FUNCTION__, __FILE__);
@@ -723,7 +723,7 @@ namespace op
                 outputWs.emplace_back(std::make_shared<WUdpSender<TDatumsSP>>(udpSender));
             }
             log("", Priority::Low, __LINE__, __FUNCTION__, __FILE__);
-#endif
+//#endif
             // Write people pose data on disk (json for OpenCV >= 3, xml, yml...)
             if (!writeKeypointCleaned.empty())
             {

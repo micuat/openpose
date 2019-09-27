@@ -11,7 +11,8 @@ namespace op
         UdpSender(const std::string& udpHost, const std::string& udpPort);
 
         virtual ~UdpSender();
-
+		void send2DJoints(const std::vector<std::pair<Array<float>, std::string>>& keypointVector,
+			const std::vector<std::vector<std::array<float, 3>>> & candidates);
         void sendJointAngles(const double* const adamPosePtr, const int adamPoseRows,
                              const double* const adamTranslationPtr,
                              const double* const adamFaceCoeffsExpPtr, const int faceCoeffRows);

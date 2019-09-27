@@ -2,7 +2,7 @@
 
 namespace op
 {
-    void enterAndTab(std::ofstream& ofstream, const bool humanReadable, const long long bracesCounter,
+    void enterAndTab(std::stringstream& ofstream, const bool humanReadable, const long long bracesCounter,
                      const long long bracketsCounter)
     {
         try
@@ -24,12 +24,12 @@ namespace op
         mHumanReadable{humanReadable},
         mBracesCounter{0},
         mBracketsCounter{0},
-        upOfstream{new std::ofstream{filePath}}
+        upOfstream{new std::stringstream}
     {
         try
         {
-            if (!filePath.empty() && !upOfstream->is_open())
-                error("Json file " + filePath + " could not be opened.", __LINE__, __FUNCTION__, __FILE__);
+            //if (!filePath.empty() && !upOfstream->is_open())
+            //    error("Json file " + filePath + " could not be opened.", __LINE__, __FUNCTION__, __FILE__);
         }
         catch (const std::exception& e)
         {

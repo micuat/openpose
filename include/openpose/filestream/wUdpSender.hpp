@@ -61,7 +61,45 @@ namespace op
                 dLog("", Priority::Low, __LINE__, __FUNCTION__, __FILE__);
                 // Profiling speed
                 const auto profilerKey = Profiler::timerInit(__LINE__, __FUNCTION__, __FILE__);
-                // Send though UDP communication
+				// Save body/face/hand keypoints to JSON file
+				const auto& tDatumFirstPtr = (*tDatums)[0];
+				const auto baseFileName = (!tDatumFirstPtr->name.empty() ? tDatumFirstPtr->name
+					: std::to_string(tDatumFirstPtr->id)) + "_keypoints";
+				const bool humanReadable = false;
+				for (auto i = 0u; i < tDatums->size(); i++)
+				{
+					const auto& tDatumPtr = (*tDatums)[i];
+					// const auto fileName = baseFileName;
+					const auto fileName = baseFileName + (i != 0 ? "_" + std::to_string(i) : "");
+
+					// Pose IDs from long long to float
+					Array<float> poseIds{ tDatumPtr->poseIds };
+
+					const std::vector<std::pair<Array<float>, std::string>> keypointVector{
+						// Pose IDs
+						std::make_pair(poseIds, "person_id"),
+						// 2D
+						std::make_pair(tDatumPtr->poseKeypoints, "pose_keypoints_2d"),
+						std::make_pair(tDatumPtr->faceKeypoints, "face_keypoints_2d"),
+						std::make_pair(tDatumPtr->handKeypoints[0], "hand_left_keypoints_2d"),
+						std::make_pair(tDatumPtr->handKeypoints[1], "hand_right_keypoints_2d"),
+						// 3D
+						std::make_pair(tDatumPtr->poseKeypoints3D, "pose_keypoints_3d"),
+						std::make_pair(tDatumPtr->faceKeypoints3D, "face_keypoints_3d"),
+						std::make_pair(tDatumPtr->handKeypoints3D[0], "hand_left_keypoints_3d"),
+						std::make_pair(tDatumPtr->handKeypoints3D[1], "hand_right_keypoints_3d")
+					};
+
+					// Save keypoints
+					spUdpSender->send2DJoints(keypointVector, tDatumPtr->poseCandidates);
+				}
+				// Profiling speed
+				Profiler::timerEnd(profilerKey);
+				Profiler::printAveragedTimeMsOnIterationX(profilerKey, __LINE__, __FUNCTION__, __FILE__);
+				// Debugging log
+				dLog("", Priority::Low, __LINE__, __FUNCTION__, __FILE__);
+
+				// Send though UDP communication
 #ifdef USE_3D_ADAM_MODEL
                 const auto& tDatumPtr = (*tDatums)[0];
                 if (!tDatumPtr->poseKeypoints3D.empty())
