@@ -28,9 +28,9 @@ DEFINE_int32(profile_speed,             1000,           "If PROFILER_ENABLED was
 #ifndef OPENPOSE_FLAGS_DISABLE_POSE
 #ifndef OPENPOSE_FLAGS_DISABLE_PRODUCER
 // Producer
-DEFINE_int32(camera,                    1 ,             "The camera index for cv::VideoCapture. Integer in the range [0, 9]. Select a negative"
+DEFINE_int32(camera,                    1,             "The camera index for cv::VideoCapture. Integer in the range [0, 9]. Select a negative"
                                                         " number (by default), to auto-detect and open the first available camera.");
-DEFINE_string(camera_resolution,        "-1x-1",        "Set the camera resolution (either `--camera` or `--flir_camera`). `-1x-1` will use the"
+DEFINE_string(camera_resolution,        "1920x1080",        "Set the camera resolution (either `--camera` or `--flir_camera`). `-1x-1` will use the"
                                                         " default 1280x720 for `--camera`, or the maximum flir camera resolution available for"
                                                         " `--flir_camera`");
 DEFINE_string(video,                    "",             "Use a video file instead of the camera. Use `examples/media/video.avi` for our default"
@@ -96,7 +96,7 @@ DEFINE_int32(body,                      1,              "Select 0 to disable bod
 DEFINE_string(model_pose,               "BODY_25",      "Model to be used. E.g., `BODY_25` (fastest for CUDA version, most accurate, and includes"
                                                         " foot keypoints), `COCO` (18 keypoints), `MPI` (15 keypoints, least accurate model but"
                                                         " fastest on CPU), `MPI_4_layers` (15 keypoints, even faster but less accurate).");
-DEFINE_string(net_resolution,           "-1x368",       "Multiples of 16. If it is increased, the accuracy potentially increases. If it is"
+DEFINE_string(net_resolution,           "-1x320",       "Multiples of 16. If it is increased, the accuracy potentially increases. If it is"
                                                         " decreased, the speed increases. For maximum speed-accuracy balance, it should keep the"
                                                         " closest aspect ratio possible to the images or videos to be processed. Using `-1` in"
                                                         " any of the dimensions, OP will choose the optimal aspect ratio depending on the user's"
